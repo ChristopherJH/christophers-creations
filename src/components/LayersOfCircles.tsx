@@ -1,18 +1,23 @@
 import Sketch from "react-p5";
 import p5Types from "p5"; //Import this for typechecking and intellisense
-
+import "../App.css";
 interface CoordsObject {
   initialRadius: number;
   xCoord: number;
   yCoord: number;
 }
-export function LayersOfCircles(): JSX.Element {
+
+interface LayersOfCirclesProps {
+  circleCount: number;
+}
+
+export function LayersOfCircles(props: LayersOfCirclesProps): JSX.Element {
   /* Program that randomly generates a canvas of concentric circles */
 
-  /* Program that randomly generates a canvas of concentric circles */
-
-  const numOfCircles = 25;
   let coordsArray: CoordsObject[] = [];
+  let width: number;
+  let height: number;
+
   const palette = [
     "#d9ed92",
     "#b5e48c",
@@ -28,13 +33,12 @@ export function LayersOfCircles(): JSX.Element {
   const numOfLayers = palette.length - 1;
   let meanRadius = 250;
   let radiusSpread = 50;
-  const width = 500;
-  const height = 500;
 
   function setup(p5: p5Types, canvasParentRef: Element) {
     p5.frameRate(0.5);
-    const canvas = p5.createCanvas(width, height);
-    canvas.mousePressed(onMousePress);
+    width = p5.windowWidth;
+    height = p5.windowHeight;
+    p5.createCanvas(width, height);
     createCenters(p5);
     //p5.drawingContext.shadowColor = p5.color(0, 0, 0, 150);
   }
@@ -45,7 +49,7 @@ export function LayersOfCircles(): JSX.Element {
   }
 
   function createCenters(p5: p5Types) {
-    for (let i = 0; i < numOfCircles; i++) {
+    for (let i = 0; i < props.circleCount; i++) {
       let circleObject = {
         initialRadius: p5.randomGaussian(meanRadius, radiusSpread),
         xCoord: p5.random(0, width),
@@ -78,7 +82,8 @@ export function LayersOfCircles(): JSX.Element {
     }
   }
 
-  function onMousePress(p5: p5Types) {
+  function mousePressed(p5: p5Types) {
+    coordsArray = [];
     createCenters(p5);
     p5.redraw();
     console.log("Mouse pressed!");
@@ -86,8 +91,10 @@ export function LayersOfCircles(): JSX.Element {
 
   return (
     <div className="layers-of-circles">
-      <h2>Layers of circles</h2>
-      <Sketch setup={setup} draw={draw} />
+      <h2 className="layers-of-circles-title">Layers of circles</h2>
+      <h3 className="layers-of-circles-helper">(Click to change)</h3>
+
+      <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
     </div>
   );
 }

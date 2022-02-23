@@ -1,0 +1,24 @@
+.layers-of-circles {
+  position: relative;
+}
+
+.layers-of-circles-title,
+.layers-of-circles-helper {
+  float: inline-start;
+  position: absolute;
+  color: white;
+  width: 50%;
+  cursor: pointer;
+}
+
+.layers-of-circles-title {
+  top: 8px;
+  left: 16px;
+  font-size: 128px;
+}
+
+.layers-of-circles-helper {
+  top: 375px;
+  left: 16px;
+  font-size: 32px;
+}
